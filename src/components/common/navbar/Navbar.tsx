@@ -41,7 +41,7 @@ export default function Navbar() {
               className={`${
                 pathname === link.href 
                   ? "text-white bg-amber-900 px-3 py-1 rounded-md" 
-                  : "text-amber-100 hover:text-amber-200 hover:bg-amber-700 px-3 py-1 rounded-md transition-colors"
+                  : "text-white hover:text-amber-200 hover:bg-amber-700 px-3 py-1 rounded-md transition-colors"
               }`}
             >
               {link.label}
@@ -89,7 +89,7 @@ export default function Navbar() {
                 className={`${
                   pathname === link.href 
                     ? "text-white bg-amber-900 px-4 py-3 rounded-md" 
-                    : "text-amber-100 hover:text-amber-200 hover:bg-amber-700 px-4 py-3 rounded-md transition-colors"
+                    : "text-white hover:text-amber-200 hover:bg-amber-700 px-4 py-3 rounded-md transition-colors"
                 }`}
                 onClick={() => setIsSidebarOpen(false)}
               >
