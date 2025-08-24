@@ -1,4 +1,5 @@
-import BookChapters from "@/components/Book/Book1";
+import BookChapters from "@/components/Book/BookChapters";
+
 
 
 const HomePage = () => {

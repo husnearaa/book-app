@@ -16,7 +16,7 @@ interface Book {
   chapters: string[][];
 }
 
-const BookChapters = () => {
+const BookChaptersOld = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [selectedBookIndex, setSelectedBookIndex] = useState(0);
   const [chapters, setChapters] = useState<Chapter[]>([]);
@@ -151,4 +151,4 @@ const BookChapters = () => {
   );
 };
 
-export default BookChapters;
+export default BookChaptersOld;
