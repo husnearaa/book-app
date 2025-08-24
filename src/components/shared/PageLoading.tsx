@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Lottie from "lottie-react";
-import loadingAnimation from "@/components/lottieAnimations/loading-animation.json";
+// import Lottie from "lottie-react";
+// import loadingAnimation from "@/components/lottieAnimations/loading-animation.json";
 
 export default function PageLoading() {
   const [loadingText, setLoadingText] = useState("Loading");
@@ -22,8 +22,13 @@ export default function PageLoading() {
 
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-background">
-      <div className="w-64 h-64 md:w-80 md:h-80">
+      {/* <div className="w-64 h-64 md:w-80 md:h-80">
         <Lottie animationData={loadingAnimation} loop={true} />
+      </div> */}
+      <div className="flex items-center justify-center space-x-2">
+        <div className="w-8 h-8 rounded-full animate-pulse bg-[#1b1b1b]"></div>
+        <div className="w-8 h-8 rounded-full animate-pulse bg-[#1b1b1b]"></div>
+        <div className="w-8 h-8 rounded-full animate-pulse bg-[#1b1b1b]"></div>
       </div>
       <p className="text-xl font-medium mt-4 text-primary min-w-[100px] text-center">
         {loadingText}

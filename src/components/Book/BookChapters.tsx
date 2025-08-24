@@ -1,14 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import bookData from "@/json/bok1.json";
-
-// Define the Chapter type
-interface Chapter {
-  id: number;
-  title: string;
-  verses: string[]; // Changed from content to verses array
-}
+import Link from "next/link";
 
 interface Book {
   abbrev: string;
@@ -16,64 +10,42 @@ interface Book {
   chapters: string[][];
 }
 
-const BookChapters = () => {
+const BooksPage = () => {
   const [books, setBooks] = useState<Book[]>([]);
-  const [selectedBookIndex, setSelectedBookIndex] = useState(0);
-  const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
-  const chaptersSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Simulate loading for a better UX (optional)
     const timer = setTimeout(() => {
       setBooks(bookData as Book[]);
-      
-      // Get the selected book
-      const selectedBook = (bookData as Book[])[selectedBookIndex];
-      
-      // Transform the chapters data to match our Chapter interface
-      const transformedChapters = selectedBook.chapters.map((chapterVerses, index) => ({
-        id: index + 1,
-        title: `Chapter ${index + 1}`,
-        verses: chapterVerses, // Store verses as array
-      }));
-      
-      setChapters(transformedChapters);
       setLoading(false);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [selectedBookIndex]);
-
-  const handleBookClick = (index: number) => {
-    setSelectedBookIndex(index);
-    
-    // Scroll to the chapters section after a short delay to allow state update
-    setTimeout(() => {
-      if (chaptersSectionRef.current) {
-        chaptersSectionRef.current.scrollIntoView({ 
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }
-    }, 100);
-  };
+  }, []);
 
   if (loading) {
     return (
       <div className="min-h-screen bg-amber-50 flex items-center justify-center">
-        <div className="text-black text-xl">Loading chapters...</div>
+        <div className="flex flex-col items-center justify-center">
+          <div className="min-h-screen bg-amber-50 flex items-center justify-center">
+            <div className="flex items-center justify-center space-x-2">
+              <div className="w-8 h-8 rounded-full animate-pulse bg-[#1b1b1b]"></div>
+              <div className="w-8 h-8 rounded-full animate-pulse bg-[#1b1b1b]"></div>
+              <div className="w-8 h-8 rounded-full animate-pulse bg-[#1b1b1b]"></div>
+            </div>
+          </div>
+          <div className="text-black text-xl">Loading books...</div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-amber-50 pt-20 px-4">
+    <div className="min-h-screen bg-amber-50 py-8 px-4">
       <div className="container mx-auto">
         <h1 className="text-3xl font-bold mb-4 underline">Books</h1>
         <p className="text-lg mb-6">All books and their chapters</p>
 
-        {/* Books List */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold text-black">
@@ -88,60 +60,22 @@ const BookChapters = () => {
             {books.map((book, index) => (
               <div
                 key={index}
-                className={`flex items-center p-4 border border-amber-200 rounded-lg transition-colors duration-200 cursor-pointer ${
-                  index === selectedBookIndex 
-                    ? "bg-amber-100 border-amber-400" 
-                    : "hover:bg-amber-50"
-                }`}
-                onClick={() => handleBookClick(index)}
+                className="flex items-center p-4 border border-amber-200 rounded-lg hover:bg-amber-50 transition-colors duration-200 cursor-pointer"
               >
                 <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-200 flex items-center justify-center mr-4">
                   <p className="text-black font-semibold">{index + 1}</p>
                 </div>
                 <div className="flex-grow">
-                  <h3 className="text-lg font-semibold text-black">{book.name}</h3>
-                  <p className="text-gray-600">{book.chapters.length} Chapters</p>
+                  <Link href={`/books/${index + 1}`} className="block">
+                    <h3 className="text-lg font-semibold text-black hover:text-amber-700">
+                      {book.name}
+                    </h3>
+                  </Link>
+                  <p className="text-gray-600">
+                    {book.chapters.length} Chapters
+                  </p>
                 </div>
                 <div className="text-sm text-gray-500">{book.abbrev}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Chapters of Selected Book */}
-        <div ref={chaptersSectionRef} className="bg-white rounded-xl shadow-lg p-6 mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold text-black">
-              {books[selectedBookIndex]?.name} - Table of Contents
-            </h2>
-            <span className="bg-amber-100 text-black py-1 px-3 rounded-full">
-              {chapters.length} Chapters
-            </span>
-          </div>
-
-          <div className="space-y-6">
-            {chapters.map((chapter) => (
-              <div
-                key={chapter.id}
-                className="p-4 border border-amber-200 rounded-lg hover:bg-amber-50 transition-colors duration-200"
-              >
-                <div className="flex items-center mb-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center mr-4">
-                    <p className="text-black font-semibold">{chapter.id}</p>
-                  </div>
-                  <h3 className="text-lg font-semibold text-black">{chapter.title}</h3>
-                </div>
-                
-                <div className="ml-14 space-y-2">
-                  {chapter.verses.map((verse, verseIndex) => (
-                    <div key={verseIndex} className="flex">
-                      <span className="text-sm font-medium text-amber-600 min-w-[2rem]">
-                        {verseIndex + 1}.
-                      </span>
-                      <p className="text-gray-700">{verse}</p>
-                    </div>
-                  ))}
-                </div>
               </div>
             ))}
           </div>
@@ -151,4 +85,4 @@ const BookChapters = () => {
   );
 };
 
-export default BookChapters;
+export default BooksPage;

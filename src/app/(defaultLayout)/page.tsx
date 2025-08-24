@@ -1,11 +1,11 @@
-import BookChapters from "@/components/Book/BookChapters";
+// import BookChapters from "@/components/Book/BookChapters";
 
 
 
 const HomePage = () => {
   return (
     <div>
-      <BookChapters />
+      <h1>Home</h1>
     </div>
   );
 };
