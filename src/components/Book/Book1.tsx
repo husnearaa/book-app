@@ -7,7 +7,7 @@ import bookData from "@/json/bok1.json";
 interface Chapter {
   id: number;
   title: string;
-  content?: string; // Optional property
+  verses: string[]; // Changed from content to verses array
 }
 
 interface Book {
@@ -32,10 +32,10 @@ const BookChapters = () => {
       const selectedBook = (bookData as Book[])[selectedBookIndex];
       
       // Transform the chapters data to match our Chapter interface
-      const transformedChapters = selectedBook.chapters.map((chapterContent, index) => ({
+      const transformedChapters = selectedBook.chapters.map((chapterVerses, index) => ({
         id: index + 1,
         title: `Chapter ${index + 1}`,
-        content: chapterContent.join(" "), // Join all verses into a single string
+        verses: chapterVerses, // Store verses as array
       }));
       
       setChapters(transformedChapters);
@@ -119,18 +119,28 @@ const BookChapters = () => {
             </span>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-6">
             {chapters.map((chapter) => (
               <div
                 key={chapter.id}
-                className="flex items-center p-4 border border-amber-200 rounded-lg hover:bg-amber-50 transition-colors duration-200"
+                className="p-4 border border-amber-200 rounded-lg hover:bg-amber-50 transition-colors duration-200"
               >
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center mr-4">
-                  <p className="text-black font-semibold">{chapter.id}</p>
-                </div>
-                <div className="flex-grow">
+                <div className="flex items-center mb-4">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center mr-4">
+                    <p className="text-black font-semibold">{chapter.id}</p>
+                  </div>
                   <h3 className="text-lg font-semibold text-black">{chapter.title}</h3>
-                  <p className="text-gray-600 mt-2">{chapter.content}</p>
+                </div>
+                
+                <div className="ml-14 space-y-2">
+                  {chapter.verses.map((verse, verseIndex) => (
+                    <div key={verseIndex} className="flex">
+                      <span className="text-sm font-medium text-amber-600 min-w-[2rem]">
+                        {verseIndex + 1}.
+                      </span>
+                      <p className="text-gray-700">{verse}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}
